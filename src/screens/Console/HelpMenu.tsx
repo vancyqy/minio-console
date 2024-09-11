@@ -314,11 +314,11 @@ const HelpMenu = () => {
           />
         </HelpMenuContainer>
       )}
-      <Button
+      {/* <Button
         id={systemHelpName ?? "help_button"}
         icon={<HelpIcon />}
         onClick={toggleHelpMenu}
-      ></Button>
+      ></Button> */}
     </Fragment>
   );
 };

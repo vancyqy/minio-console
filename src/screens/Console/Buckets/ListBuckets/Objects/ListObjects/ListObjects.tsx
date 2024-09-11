@@ -570,7 +570,7 @@ const ListObjects = () => {
           }.`;
 
           const errorMessages: any = {
-            413: "Error - File size too large"
+            413: t("Error - File size too large")
           };
 
           xhr.withCredentials = false;

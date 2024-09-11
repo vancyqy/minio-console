@@ -334,7 +334,8 @@ const Inspect = () => {
             marginTop: "30px",
             marginLeft: "15px",
             fontSize: "14px"
-          }}>{t("You can learn more at our")}
+          }}>
+            {/* {t("You can learn more at our")}
 
             {" "}
                       <a
@@ -343,7 +344,7 @@ const Inspect = () => {
             rel="noopener">{t("documentation")}
 
 
-            </a>
+            </a> */}
                       .
                     </Box>
                   </Fragment>} />}>

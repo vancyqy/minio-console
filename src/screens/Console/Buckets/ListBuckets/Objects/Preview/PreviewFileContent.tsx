@@ -190,10 +190,9 @@ const PreviewFile = ({
           {objectType === "none" &&
         <div>
               <InformativeMessage
-          message=" File couldn't be previewed using file extension or mime type. Please
-            try Download instead"
+          message={t(" File couldn't be previewed using file extension or mime type. Please try Download instead")}
 
-          title="Preview unavailable"
+          title={t('Preview unavailable')}
           sx={{ margin: "15px 0" }} />
           
             </div>}

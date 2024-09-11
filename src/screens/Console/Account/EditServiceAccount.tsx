@@ -219,7 +219,7 @@ const EditServiceAccount = ({
               style={{
                 gap: "115px"
               }}
-              indicatorLabels={["Enabled", "Disabled"]}
+              indicatorLabels={[t("Enabled"), t("Disabled")]}
               checked={status === "on"}
               id="saStatus"
               name="saStatus"

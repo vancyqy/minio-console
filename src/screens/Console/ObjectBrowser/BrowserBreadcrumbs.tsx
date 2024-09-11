@@ -292,7 +292,7 @@ const BrowserBreadcrumbs = ({
         <Tooltip
         tooltip={
         canCreatePath ?
-        "Choose or create a new path" :
+        t("Choose or create a new path") :
         permissionTooltipHelper(
         [IAM_SCOPES.S3_PUT_OBJECT, IAM_SCOPES.S3_PUT_ACTIONS],
         "create a new path")}>

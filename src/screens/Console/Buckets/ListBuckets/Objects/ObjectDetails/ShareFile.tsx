@@ -141,7 +141,12 @@ const ShareFile = ({
           expires: selectedDate !== "" ? `${diffDate}s` : ""
         }).
         then((res) => {
-          setShareURL(res.data);
+          let url = res.data
+          if (url) {
+            url = url.substring(url.indexOf('/api'))
+            url = `${window.location.origin}${url}`
+          }
+          setShareURL(url);
           setIsLoadingFile(false);
         }).
         catch((err) => {

@@ -128,13 +128,13 @@ const UploadFilesButton = ({
       id={"upload-main-menu"}
       options={[
       {
-        label: "Upload File",
+        label: t("Upload File"),
         icon: <UploadIcon />,
         value: "file",
         disabled: !uploadObjectAllowed || forceDisable
       },
       {
-        label: "Upload Folder",
+        label: t("Upload Folder"),
         icon: <UploadFolderIcon />,
         value: "folder",
         disabled: !uploadFolderAllowed || forceDisable

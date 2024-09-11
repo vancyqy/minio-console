@@ -528,7 +528,7 @@ const ObjectDetailPanel = ({
 
     const formatTime = niceDaysInt(difTime, "ms");
 
-    return formatTime.trim() !== "" ? `${formatTime} ago` : t("Just now");
+    return formatTime.trim() !== "" ? `${formatTime} ${t('ago')}` : t("Just now");
   };
 
   return (
