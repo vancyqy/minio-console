@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { t } from "i18next";
 import React, { Fragment } from "react";
 import ModalWrapper from "../../../../Common/ModalWrapper/ModalWrapper";
 import PreviewFileContent from "./PreviewFileContent";
@@ -37,7 +38,7 @@ const PreviewFileModal = ({
     <Fragment>
       <ModalWrapper
         modalOpen={open}
-        title={`Preview - ${actualInfo?.name}`}
+        title={`${t('Preview')} - ${actualInfo?.name}`}
         onClose={onClosePreview}
         wideLimit={false}
         titleIcon={<ObjectPreviewIcon />}

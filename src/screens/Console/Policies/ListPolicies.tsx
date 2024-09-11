@@ -262,7 +262,7 @@ const ListPolicies = () => {
 
 
               <br />
-                  <br />{t("You can learn more at our")}
+                  {/* <br />{t("You can learn more at our")}
               {" "}
                   <a
               href="https://min.io/docs/minio/linux/administration/identity-access-management.html?ref=con#access-management"
@@ -270,7 +270,7 @@ const ListPolicies = () => {
               rel="noopener">{t("documentation")}
 
 
-              </a>
+              </a> */}
                   .
                 </Fragment>} />
 

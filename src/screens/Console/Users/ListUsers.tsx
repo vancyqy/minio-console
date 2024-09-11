@@ -384,7 +384,7 @@ const ListUsers = () => {
 
 
                 <br />
-                        <br />{t("You can learn more at our")}
+                        {/* <br />{t("You can learn more at our")}
                 {" "}
                         <a
                 href="https://min.io/docs/minio/kubernetes/upstream/administration/identity-access-management/minio-user-management.html?ref=con"
@@ -392,7 +392,7 @@ const ListUsers = () => {
                 rel="noopener">{t("documentation")}
 
 
-                </a>
+                </a> */}
                         .
                       </Fragment>} />
 

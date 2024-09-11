@@ -265,7 +265,7 @@ const DaysSelector = ({
         {validDate && dateSelected ?
         <div className={"validityText"}>
             <LinkIcon />
-            <div>{entity}{t("will be available until:")}</div>{" "}
+            <div>{t(entity)}{t("will be available until:")}</div>{" "}
             <div className={"validTill"}>
               {DateTime.fromISO(dateSelected).toFormat(
             // "MM/dd/yyyy HH:mm:ss ZZZZ")}

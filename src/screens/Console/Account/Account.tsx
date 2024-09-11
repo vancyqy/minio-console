@@ -304,7 +304,8 @@ const Account = () => {
 
 
               <br />
-                  <br />{t("You can learn more at our")}
+                  <br />
+                  {/* {t("You can learn more at our")}
               {" "}
                   <a
               href="https://min.io/docs/minio/linux/administration/identity-access-management/minio-user-management.html?ref=con#id3"
@@ -312,7 +313,7 @@ const Account = () => {
               rel="noopener">{t("documentation")}
 
 
-              </a>
+              </a> */}
                   .
                 </Fragment>} />
 

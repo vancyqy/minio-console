@@ -124,7 +124,7 @@ const InspectObject = ({
           <b>{inspectPath}</b>? <br />
             <Switch
           label={t("Encrypt")}
-          indicatorLabels={["Yes", "No"]}
+          indicatorLabels={[t("Yes"), t("No")]}
           checked={isEncrypt}
           value={"encrypt"}
           id="encrypt"

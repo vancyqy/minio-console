@@ -149,9 +149,7 @@ const AddTagModal = ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     width: "100%"
-  }}>{t("Tag")}
-
-    {plural ? "s" : ""}{t("for:")}<strong>{currentItem}</strong>
+  }}><strong>{currentItem}</strong>
     </Box>;
 
 

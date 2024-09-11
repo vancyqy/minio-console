@@ -190,8 +190,8 @@ const BucketListItem = ({
       <Box className={"bucketDetails"}>
         <span id={`created-${bucket.name}`}>
           <strong>{t("Created:")}</strong>{" "}
-          {bucket.creation_date ?
-          new Date(bucket.creation_date).toString() :
+          {bucket.creation_date && bucket.creation_date.replace ?
+          bucket.creation_date.replace(/[TZ]/, '') :
           "n/a"}
         </span>
         <span id={`access-${bucket.name}`}>

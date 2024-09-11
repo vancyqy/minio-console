@@ -335,7 +335,7 @@ const Groups = () => {
 
 
                   <br />
-                          <br />{t("You can learn more at our")}
+                          {/* <br />{t("You can learn more at our")}
                   {" "}
                           <a
                   href="https://min.io/docs/minio/linux/administration/identity-access-management/minio-group-management.html?ref=con"
@@ -343,7 +343,7 @@ const Groups = () => {
                   rel="noopener">{t("documentation")}
 
 
-                  </a>
+                  </a> */}
                           .
                         </Fragment>} />
 
