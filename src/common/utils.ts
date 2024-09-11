@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import storage from "local-storage-fallback";
+import { t } from "i18next";
 import { IBytesCalc, IErasureCodeCalc, IStorageFactors } from "./types";
 
 import get from "lodash/get";
@@ -310,35 +311,36 @@ export const niceDaysInt = (seconds: number, timeVariant: string = "s") => {
 
   if (days > 365) {
     const years = days / 365;
-    return `${years} year${Math.floor(years) === 1 ? "" : "s"}`;
+    // return `${years} year${Math.floor(years) === 1 ? "" : "s"}`;
+    return `${years} ${Math.floor(years) === 1 ? t('year') : t('years')}`;
   }
 
   if (days > 30) {
     const months = Math.floor(days / 30);
     const diffDays = days - months * 30;
 
-    return `${months} month${Math.floor(months) === 1 ? "" : "s"} ${
-      diffDays > 0 ? `${diffDays} day${diffDays > 1 ? "s" : ""}` : ""
+    return `${months} ${Math.floor(months) === 1 ? t('month') : t("months")} ${
+      diffDays > 0 ? `${diffDays} ${diffDays > 1 ? t("days") : t("day")}` : ""
     }`;
   }
 
   if (days >= 7 && days <= 30) {
     const weeks = Math.floor(days / 7);
 
-    return `${Math.floor(weeks)} week${weeks === 1 ? "" : "s"}`;
+    return `${Math.floor(weeks)} ${weeks === 1 ? t("week") : t("weeks")}`;
   }
 
   if (days >= 1 && days <= 6) {
-    return `${days} day${days > 1 ? "s" : ""}`;
+    return `${days} ${days > 1 ? t("days") : t("day")}`;
   }
 
-  return `${hours >= 1 ? `${hours} hour${hours > 1 ? "s" : ""}` : ""} ${
+  return `${hours >= 1 ? `${hours} ${hours > 1 ? t("hours") : t("hour")}` : ""} ${
     minutes >= 1 && hours === 0
-      ? `${minutes} minute${minutes > 1 ? "s" : ""}`
+      ? `${minutes} ${minutes > 1 ? t("minutes") : t("minute")}`
       : ""
   } ${
     seconds >= 1 && minutes === 0 && hours === 0
-      ? `${seconds} second${seconds > 1 ? "s" : ""}`
+      ? `${seconds} ${seconds > 1 ? "seconds" : "second"}`
       : ""
   }`;
 };

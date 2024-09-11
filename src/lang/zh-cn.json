@@ -1226,7 +1226,21 @@
   
   "Objects-number":"个",
   "Object-number":"个",
-  "Today":"今天"
+  "Today":"今天",
+  
+  "year":"年",
+  "years":"年",
+  "month":"月",
+  "months":"月",
+  "day":"日",
+  "week":"周",
+  "weeks":"周",
+  "hours":"小时",
+  "hour":"小时",
+  "minutes":"分钟",
+  "minute":"分钟",
+  "seconds":"秒",
+  "second":"秒"
 
 
 }

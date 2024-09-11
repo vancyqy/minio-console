@@ -1221,7 +1221,20 @@
   "Legal Hold":"Legal Hold",
   "Objects-number":"Objects",
   "Object-number":"Object",
-  "Today":"Today, "
+  "Today":"Today, ",
+  "year":"year",
+  "years":"years",
+  "month":"month",
+  "months":"months",
+  "day":"day",
+  "week":"week",
+  "weeks":"weeks",
+  "hours":"hours",
+  "hour":"hour",
+  "minutes":"minutes",
+  "minute":"minute",
+  "seconds":"seconds",
+  "second":"second"
 
   
 }
