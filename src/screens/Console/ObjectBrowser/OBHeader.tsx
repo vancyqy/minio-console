@@ -145,7 +145,7 @@ const OBHeader = ({ bucketName }: IOBHeader) => {
                   <Button
             id={"configure-bucket-main"}
             color="primary"
-            aria-label="Configure Bucket"
+            aria-label={t("Configure Bucket")}
             onClick={() => navigate(`/buckets/${bucketName}/admin`)}
             icon={
             <SettingsIcon

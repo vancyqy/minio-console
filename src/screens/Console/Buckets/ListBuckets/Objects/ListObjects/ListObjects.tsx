@@ -850,8 +850,8 @@ const ListObjects = () => {
 
   const downloadToolTip =
   selectedObjects?.length <= 1 ?
-  "Download Selected" :
-  ` Download selected objects as Zip. Any Deleted objects in the selection would be skipped from download.`;
+  t("Download Selected"):
+  t(` Download selected objects as Zip. Any Deleted objects in the selection would be skipped from download.`);
 
   const multiActionButtons = [
   {
@@ -1265,7 +1265,7 @@ const ListObjects = () => {
                   {selectedObjects.length > 0 &&
                 <ActionsList
                 items={multiActionButtons}
-                title={"Selected Objects:"} />}
+                title={t("Selected Objects:")} />}
 
                 
                   {selectedInternalPaths !== null &&

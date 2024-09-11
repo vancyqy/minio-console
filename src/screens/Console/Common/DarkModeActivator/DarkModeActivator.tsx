@@ -35,7 +35,7 @@ const DarkModeActivator = () => {
   };
 
   return (
-    <TooltipWrapper tooltip={`${darkMode ? t("Light") : t("Dark")} Mode`}>
+    <TooltipWrapper tooltip={`${darkMode ? t("Light") : t("Dark")} ${t('Mode')}`}>
       <Button
       id={"dark-mode-activator"}
       icon={darkMode ? <LightModeIcon /> : <DarkModeIcon />}
