@@ -19,43 +19,43 @@ import get from "lodash/get";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-ActionLink,
-AddIcon,
-Box,
-Button,
-Grid,
-HelpBox,
-PageLayout,
-ProgressBar,
-RefreshIcon,
-TierOfflineIcon,
-TierOnlineIcon,
-TiersIcon,
-TiersNotAvailableIcon } from
-"mds";
-import {DataTable} from "mds-dist"
+  ActionLink,
+  AddIcon,
+  Box,
+  Button,
+  Grid,
+  HelpBox,
+  PageLayout,
+  ProgressBar,
+  RefreshIcon,
+  TierOfflineIcon,
+  TierOnlineIcon,
+  TiersIcon,
+  TiersNotAvailableIcon,
+} from "mds";
+import { DataTable } from "mds-dist";
 import { api } from "api";
 import { errorToHandler } from "api/errors";
 import { Tier } from "api/consoleApi";
 import { actionsTray } from "../../Common/FormComponents/common/styleLibrary";
 import {
-CONSOLE_UI_RESOURCE,
-IAM_PAGES,
-IAM_PERMISSIONS,
-IAM_ROLES,
-IAM_SCOPES } from
-"../../../../common/SecureComponent/permissions";
+  CONSOLE_UI_RESOURCE,
+  IAM_PAGES,
+  IAM_PERMISSIONS,
+  IAM_ROLES,
+  IAM_SCOPES,
+} from "../../../../common/SecureComponent/permissions";
 import {
-hasPermission,
-SecureComponent } from
-"../../../../common/SecureComponent";
+  hasPermission,
+  SecureComponent,
+} from "../../../../common/SecureComponent";
 import { tierTypes } from "./utils";
 
 import {
-selDistSet,
-setErrorSnackMessage,
-setHelpName } from
-"../../../../systemSlice";
+  selDistSet,
+  setErrorSnackMessage,
+  setHelpName,
+} from "../../../../systemSlice";
 import { useAppDispatch } from "../../../../store";
 import SearchBox from "../../Common/SearchBox";
 import withSuspense from "../../Common/Components/withSuspense";
@@ -66,8 +66,8 @@ import HelpMenu from "../../HelpMenu";
 import DeleteTierConfirmModal from "./DeleteTierConfirmModal";
 
 const UpdateTierCredentialsModal = withSuspense(
-React.lazy(() => import("./UpdateTierCredentialsModal")));
-
+  React.lazy(() => import("./UpdateTierCredentialsModal")),
+);
 
 const ListTiersConfiguration = () => {
   const dispatch = useAppDispatch();
@@ -78,32 +78,32 @@ const ListTiersConfiguration = () => {
   const [filter, setFilter] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [updateCredentialsOpen, setUpdateCredentialsOpen] =
-  useState<boolean>(false);
+    useState<boolean>(false);
 
   const [deleteTierModalOpen, setDeleteTierModalOpen] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [selectedTier, setSelectedTier] = useState<Tier>({
     type: "unsupported",
-    status: false
+    status: false,
   });
   const hasSetTier = hasPermission(CONSOLE_UI_RESOURCE, [
-  IAM_SCOPES.ADMIN_SET_TIER]);
-
+    IAM_SCOPES.ADMIN_SET_TIER,
+  ]);
 
   useEffect(() => {
     if (isLoading) {
       if (distributedSetup) {
         const fetchRecords = () => {
-          api.admin.
-          tiersList().
-          then((res) => {
-            setRecords(res.data.items || []);
-            setIsLoading(false);
-          }).
-          catch((err) => {
-            dispatch(setErrorSnackMessage(errorToHandler(err.error)));
-            setIsLoading(false);
-          });
+          api.admin
+            .tiersList()
+            .then((res) => {
+              setRecords(res.data.items || []);
+              setIsLoading(false);
+            })
+            .catch((err) => {
+              dispatch(setErrorSnackMessage(errorToHandler(err.error)));
+              setIsLoading(false);
+            });
         };
         fetchRecords();
       } else {
@@ -138,22 +138,22 @@ const ListTiersConfiguration = () => {
 
   const renderTierType = (item: string) => {
     const { logoXs } =
-    tierTypes.find((tierConf) => tierConf.serviceName === item) || {};
+      tierTypes.find((tierConf) => tierConf.serviceName === item) || {};
     if (item) {
       return (
         <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          "& .min-icon": {
-            width: "18px",
-            height: "22px"
-          }
-        }}>
-          
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            "& .min-icon": {
+              width: "18px",
+              height: "22px",
+            },
+          }}
+        >
           {logoXs}
-        </Box>);
-
+        </Box>
+      );
     }
     return "";
   };
@@ -162,36 +162,36 @@ const ListTiersConfiguration = () => {
     if (item) {
       return (
         <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyItems: "start",
-          color: "#4CCB92",
-          fontSize: "8px",
-          flexDirection: "column"
-        }}>
-          
-          <TierOnlineIcon style={{ fill: "#4CCB92", width: 14, height: 14 }} />{t("ONLINE")}
-
-        </Grid>);
-
+          container
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyItems: "start",
+            color: "#4CCB92",
+            fontSize: "8px",
+            flexDirection: "column",
+          }}
+        >
+          <TierOnlineIcon style={{ fill: "#4CCB92", width: 14, height: 14 }} />
+          {t("ONLINE")}
+        </Grid>
+      );
     }
     return (
       <Grid
-      container
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        color: "#C83B51",
-        fontSize: "8px"
-      }}>
-        
-        <TierOfflineIcon style={{ fill: "#C83B51", width: 14, height: 14 }} />{t("OFFLINE")}
-
-      </Grid>);
-
+        container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          color: "#C83B51",
+          fontSize: "8px",
+        }}
+      >
+        <TierOfflineIcon style={{ fill: "#C83B51", width: 14, height: 14 }} />
+        {t("OFFLINE")}
+      </Grid>
+    );
   };
 
   const renderTierPrefix = (item: Tier) => {
@@ -279,258 +279,259 @@ const ListTiersConfiguration = () => {
 
   return (
     <Fragment>
-      {updateCredentialsOpen &&
-      <UpdateTierCredentialsModal
-      open={updateCredentialsOpen}
-      tierData={selectedTier}
-      closeModalAndRefresh={closeTierCredentials} />}
+      {updateCredentialsOpen && (
+        <UpdateTierCredentialsModal
+          open={updateCredentialsOpen}
+          tierData={selectedTier}
+          closeModalAndRefresh={closeTierCredentials}
+        />
+      )}
 
-      
-      {deleteTierModalOpen &&
-      <DeleteTierConfirmModal
-      open={deleteTierModalOpen}
-      tierName={get(selectedTier, `${selectedTier.type}.name`, "")}
-      closeModalAndRefresh={closeDeleteTier} />}
+      {deleteTierModalOpen && (
+        <DeleteTierConfirmModal
+          open={deleteTierModalOpen}
+          tierName={get(selectedTier, `${selectedTier.type}.name`, "")}
+          closeModalAndRefresh={closeDeleteTier}
+        />
+      )}
 
-      
       <PageHeaderWrapper label={t("Tiers")} actions={<HelpMenu />} />
 
       <PageLayout>
-        {!distributedSetup ?
-        <DistributedOnly
-        entity={"Tiers"}
-        iconComponent={<TiersNotAvailableIcon />} /> :
-
-
-        <Fragment>
+        {!distributedSetup ? (
+          <DistributedOnly
+            entity={"Tiers"}
+            iconComponent={<TiersNotAvailableIcon />}
+          />
+        ) : (
+          <Fragment>
             <Grid item xs={12} sx={actionsTray.actionsTray}>
               <SearchBox
-            placeholder={t("Filter")}
-            onChange={setFilter}
-            value={filter}
-            sx={{
-              marginRight: "auto",
-              maxWidth: 380
-            }} />
-            
+                placeholder={t("Filter")}
+                onChange={setFilter}
+                value={filter}
+                sx={{
+                  marginRight: "auto",
+                  maxWidth: 380,
+                }}
+              />
 
               <Box
-            sx={{
-              display: "flex",
-              flexWrap: "nowrap",
-              gap: 5
-            }}>
-              
+                sx={{
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  gap: 5,
+                }}
+              >
                 <Button
-              id={"refresh-list"}
-              icon={<RefreshIcon />}
-              label={`${t("Refresh List")}`}
-              onClick={() => {
-                setIsLoading(true);
-              }} />
-              
-                <TooltipWrapper
-              tooltip={
-              hasSetTier ?
-              "" :
-              "You require additional permissions in order to create a new Tier. Please ask your MinIO administrator to grant you " +
-              IAM_SCOPES.ADMIN_SET_TIER +
-              " permission in order to create a Tier."}>
+                  id={"refresh-list"}
+                  icon={<RefreshIcon />}
+                  label={`${t("Refresh List")}`}
+                  onClick={() => {
+                    setIsLoading(true);
+                  }}
+                />
 
-                
+                <TooltipWrapper
+                  tooltip={
+                    hasSetTier
+                      ? ""
+                      : "You require additional permissions in order to create a new Tier. Please ask your MinIO administrator to grant you " +
+                        IAM_SCOPES.ADMIN_SET_TIER +
+                        " permission in order to create a Tier."
+                  }
+                >
                   <SecureComponent
-                scopes={[IAM_SCOPES.ADMIN_SET_TIER]}
-                resource={CONSOLE_UI_RESOURCE}
-                errorProps={{ disabled: true }}>
-                  
+                    scopes={[IAM_SCOPES.ADMIN_SET_TIER]}
+                    resource={CONSOLE_UI_RESOURCE}
+                    errorProps={{ disabled: true }}
+                  >
                     <Button
-                  id={"add-tier"}
-                  icon={<AddIcon />}
-                  label={`${t("Create Tier")}`}
-                  onClick={addTier}
-                  variant="callAction" />
-                  
+                      id={"add-tier"}
+                      icon={<AddIcon />}
+                      label={`${t("Create Tier")}`}
+                      onClick={addTier}
+                      variant="callAction"
+                    />
                   </SecureComponent>
                 </TooltipWrapper>
               </Box>
             </Grid>
             {isLoading && <ProgressBar />}
-            {!isLoading &&
-          <Fragment>
-                {records.length > 0 &&
-            <Fragment>
+            {!isLoading && (
+              <Fragment>
+                {records.length > 0 && (
+                  <Fragment>
                     <Grid item xs={12}>
                       <SecureComponent
-                scopes={[IAM_SCOPES.ADMIN_LIST_TIERS]}
-                resource={CONSOLE_UI_RESOURCE}
-                errorProps={{ disabled: true }}>
-                  
+                        scopes={[IAM_SCOPES.ADMIN_LIST_TIERS]}
+                        resource={CONSOLE_UI_RESOURCE}
+                        errorProps={{ disabled: true }}
+                      >
                         <DataTable
-                  itemActions={[
-                  {
-                    type: "edit",
-                    onClick: (tierData: Tier) => {
-                      setSelectedTier(tierData);
-                      setUpdateCredentialsOpen(true);
-                    }
-                  },
-                  {
-                    type: "delete",
-                    isDisabled: !hasPermission(
-                    "*",
-                    IAM_PERMISSIONS[IAM_ROLES.BUCKET_LIFECYCLE],
-                    true),
+                          itemActions={[
+                            {
+                              type: "edit",
+                              onClick: (tierData: Tier) => {
+                                setSelectedTier(tierData);
+                                setUpdateCredentialsOpen(true);
+                              },
+                            },
+                            {
+                              type: "delete",
+                              isDisabled: !hasPermission(
+                                "*",
+                                IAM_PERMISSIONS[IAM_ROLES.BUCKET_LIFECYCLE],
+                                true,
+                              ),
 
-                    onClick: (tierData: Tier) => {
-                      setSelectedTier(tierData);
-                      setDeleteTierModalOpen(true);
-                    }
-                  }]}
-
-                  columns={[
-                  {
-                    label: t("Tier Name"),
-                    elementKey: "type",
-                    renderFunction: renderTierName,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Status"),
-                    elementKey: "status",
-                    renderFunction: renderTierStatus,
-                    width: 50
-                  },
-                  {
-                    label: t("Type"),
-                    elementKey: "type",
-                    renderFunction: renderTierType,
-                    width: 50
-                  },
-                  {
-                    label: t("Endpoint"),
-                    elementKey: "type",
-                    renderFunction: renderTierEndpoint,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Bucket"),
-                    elementKey: "type",
-                    renderFunction: renderTierBucket,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Prefix"),
-                    elementKey: "type",
-                    renderFunction: renderTierPrefix,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Region"),
-                    elementKey: "type",
-                    renderFunction: renderTierRegion,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Usage"),
-                    elementKey: "type",
-                    renderFunction: renderTierUsage,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Objects"),
-                    elementKey: "type",
-                    renderFunction: renderTierObjects,
-                    renderFullObject: true
-                  },
-                  {
-                    label: t("Versions"),
-                    elementKey: "type",
-                    renderFunction: renderTierVersions,
-                    renderFullObject: true
-                  }]}
-
-                  isLoading={isLoading}
-                  records={filteredRecords}
-                  entityName={t("Tiers")}
-                  idField="service_name"
-                  customPaperHeight={"400px"} />
-                  
+                              onClick: (tierData: Tier) => {
+                                setSelectedTier(tierData);
+                                setDeleteTierModalOpen(true);
+                              },
+                            },
+                          ]}
+                          columns={[
+                            {
+                              label: t("Tier Name"),
+                              elementKey: "type",
+                              renderFunction: renderTierName,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Status"),
+                              elementKey: "status",
+                              renderFunction: renderTierStatus,
+                              width: 50,
+                            },
+                            {
+                              label: t("Type"),
+                              elementKey: "type",
+                              renderFunction: renderTierType,
+                              width: 50,
+                            },
+                            {
+                              label: t("Endpoint"),
+                              elementKey: "type",
+                              renderFunction: renderTierEndpoint,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Bucket"),
+                              elementKey: "type",
+                              renderFunction: renderTierBucket,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Prefix"),
+                              elementKey: "type",
+                              renderFunction: renderTierPrefix,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Region"),
+                              elementKey: "type",
+                              renderFunction: renderTierRegion,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Usage"),
+                              elementKey: "type",
+                              renderFunction: renderTierUsage,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Objects"),
+                              elementKey: "type",
+                              renderFunction: renderTierObjects,
+                              renderFullObject: true,
+                            },
+                            {
+                              label: t("Versions"),
+                              elementKey: "type",
+                              renderFunction: renderTierVersions,
+                              renderFullObject: true,
+                            },
+                          ]}
+                          isLoading={isLoading}
+                          records={filteredRecords}
+                          entityName={t("Tiers")}
+                          idField="service_name"
+                          customPaperHeight={"400px"}
+                        />
                       </SecureComponent>
                     </Grid>
                     <Grid
-              item
-              xs={12}
-              sx={{
-                marginTop: "15px"
-              }}>
-                
+                      item
+                      xs={12}
+                      sx={{
+                        marginTop: "15px",
+                      }}
+                    >
                       <HelpBox
-                title={t("Learn more about TIERS")}
-                iconComponent={<TiersIcon />}
-                help={
-                <Fragment>{t("Tiers are used by the MinIO Object Lifecycle Management which allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.")}
-
-
-
-
-
-
-                  <br />
-                            <br />{t("You can learn more at our")}
-                  {" "}
+                        title={t("Learn more about TIERS")}
+                        iconComponent={<TiersIcon />}
+                        help={
+                          <Fragment>
+                            {t(
+                              "Tiers are used by the MinIO Object Lifecycle Management which allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.",
+                            )}
+                            <br />
+                            {/* <br />
+                            {t("You can learn more at our")}{" "}
                             <a
-                  href="https://min.io/docs/minio/linux/administration/object-management/object-lifecycle-management.html?ref=con"
-                  target="_blank"
-                  rel="noopener">{t("documentation")}
-
-
-                  </a>
-                            .
-                          </Fragment>} />
-
-                
+                              href="https://min.io/docs/minio/linux/administration/object-management/object-lifecycle-management.html?ref=con"
+                              target="_blank"
+                              rel="noopener"
+                            >
+                              {t("documentation")}
+                            </a>
+                            . */}
+                          </Fragment>
+                        }
+                      />
                     </Grid>
-                  </Fragment>}
-            
-                {records.length === 0 &&
-            <HelpBox
-            title={t("Tiers")}
-            iconComponent={<TiersIcon />}
-            help={
-            <Fragment>{t("Tiers are used by the MinIO Object Lifecycle Management which allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.")}
+                  </Fragment>
+                )}
 
+                {records.length === 0 && (
+                  <HelpBox
+                    title={t("Tiers")}
+                    iconComponent={<TiersIcon />}
+                    help={
+                      <Fragment>
+                        {t(
+                          "Tiers are used by the MinIO Object Lifecycle Management which allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.",
+                        )}
 
-
-
-
-              <br />
                         <br />
-                        {hasSetTier ?
-              <div>{t("To get started,")}
-                {" "}
+                        <br />
+                        {hasSetTier ? (
+                          <div>
+                            {t("To get started,")}{" "}
                             <ActionLink
-                isLoading={false}
-                label={""}
-                onClick={addTier}>{t("Create Tier")}
-
-
-                </ActionLink>
+                              isLoading={false}
+                              label={""}
+                              onClick={addTier}
+                            >
+                              {t("Create Tier")}
+                            </ActionLink>
                             .
-                          </div> :
-
-              ""}
-              
-                      </Fragment>} />}
-
-
-            
-              </Fragment>}
-          
-          </Fragment>}
-        
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Fragment>
+                    }
+                  />
+                )}
+              </Fragment>
+            )}
+          </Fragment>
+        )}
       </PageLayout>
-    </Fragment>);
-
+    </Fragment>
+  );
 };
 
 export default ListTiersConfiguration;

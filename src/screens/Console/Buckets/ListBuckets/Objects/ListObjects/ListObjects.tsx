@@ -565,9 +565,9 @@ const ListObjects = () => {
           // xhr.setRequestHeader("X-Anonymous", "1");
 
           const areMultipleFiles = files.length > 1;
-          let errorMessage = `An error occurred while uploading the file${
+          let errorMessage = t(`An error occurred while uploading the file${
           areMultipleFiles ? "s" : ""
-          }.`;
+          }.`);
 
           const errorMessages: any = {
             413: t("Error - File size too large")
@@ -687,8 +687,8 @@ const ListObjects = () => {
           const successUploadedFiles =
           uploadFilePromises.length - errors.length;
           const err: ErrorResponseHandler = {
-            errorMessage: "There were some errors during file upload",
-            detailedError: `Uploaded files ${successUploadedFiles}/${totalFiles}`
+            errorMessage: t("There were some errors during file upload"),
+            detailedError: `${t('Uploaded files')} ${successUploadedFiles}/${totalFiles}`
           };
           dispatch(setErrorSnackMessage(err));
         }

@@ -17,23 +17,23 @@ import { t } from "i18next";
 import React, { Fragment, useEffect, useState } from "react";
 import get from "lodash/get";
 import {
-AddIcon,
-Button,
-Grid,
-HelpBox,
-SectionTitle,
-TiersIcon,
-HelpTip } from
-"mds";
-import {DataTable} from "mds-dist"
+  AddIcon,
+  Button,
+  Grid,
+  HelpBox,
+  SectionTitle,
+  TiersIcon,
+  HelpTip,
+} from "mds";
+import { DataTable } from "mds-dist";
 import { useSelector } from "react-redux";
 import { api } from "api";
 import { ObjectBucketLifecycle } from "api/consoleApi";
 import { LifeCycleItem } from "../types";
 import {
-hasPermission,
-SecureComponent } from
-"../../../../common/SecureComponent";
+  hasPermission,
+  SecureComponent,
+} from "../../../../common/SecureComponent";
 import { IAM_SCOPES } from "../../../../common/SecureComponent/permissions";
 import { selBucketDetailsLoading } from "./bucketDetailsSlice";
 import { useParams } from "react-router-dom";
@@ -50,23 +50,23 @@ const BucketLifecyclePanel = () => {
 
   const [loadingLifecycle, setLoadingLifecycle] = useState<boolean>(true);
   const [lifecycleRecords, setLifecycleRecords] = useState<
-  ObjectBucketLifecycle[]>(
-  []);
+    ObjectBucketLifecycle[]
+  >([]);
   const [addLifecycleOpen, setAddLifecycleOpen] = useState<boolean>(false);
   const [editLifecycleOpen, setEditLifecycleOpen] = useState<boolean>(false);
   const [selectedLifecycleRule, setSelectedLifecycleRule] =
-  useState<LifeCycleItem | null>(null);
+    useState<LifeCycleItem | null>(null);
   const [deleteLifecycleOpen, setDeleteLifecycleOpen] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [selectedID, setSelectedID] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const bucketName = params.bucketName || "";
 
   const displayLifeCycleRules = hasPermission(bucketName, [
-  IAM_SCOPES.S3_GET_LIFECYCLE_CONFIGURATION,
-  IAM_SCOPES.S3_GET_ACTIONS]);
-
+    IAM_SCOPES.S3_GET_LIFECYCLE_CONFIGURATION,
+    IAM_SCOPES.S3_GET_ACTIONS,
+  ]);
 
   useEffect(() => {
     if (loadingBucket) {
@@ -82,28 +82,28 @@ const BucketLifecyclePanel = () => {
   useEffect(() => {
     if (loadingLifecycle) {
       if (displayLifeCycleRules) {
-        api.buckets.
-        getBucketLifecycle(bucketName).
-        then((res) => {
-          const records = get(res.data, "lifecycle", []);
-          setLifecycleRecords(records || []);
-          setLoadingLifecycle(false);
-        }).
-        catch((err) => {
-          console.error(err.error);
-          setLifecycleRecords([]);
-          setLoadingLifecycle(false);
-        });
+        api.buckets
+          .getBucketLifecycle(bucketName)
+          .then((res) => {
+            const records = get(res.data, "lifecycle", []);
+            setLifecycleRecords(records || []);
+            setLoadingLifecycle(false);
+          })
+          .catch((err) => {
+            console.error(err.error);
+            setLifecycleRecords([]);
+            setLoadingLifecycle(false);
+          });
       } else {
         setLoadingLifecycle(false);
       }
     }
   }, [
-  loadingLifecycle,
-  setLoadingLifecycle,
-  bucketName,
-  displayLifeCycleRules]);
-
+    loadingLifecycle,
+    setLoadingLifecycle,
+    bucketName,
+    displayLifeCycleRules,
+  ]);
 
   const closeEditLCAndRefresh = (refresh: boolean) => {
     setEditLifecycleOpen(false);
@@ -137,260 +137,286 @@ const BucketLifecyclePanel = () => {
   };
 
   const lifecycleColumns = [
-  {
-    label: t("Type"),
-    renderFullObject: true,
-    renderFunction: (el: LifeCycleItem) => {
-      if (!el) {
-        return <Fragment />;
-      }
-      if (
-      el.expiration && (
-      el.expiration.days > 0 ||
-      el.expiration.noncurrent_expiration_days ||
-      el.expiration.newer_noncurrent_expiration_versions &&
-      el.expiration.newer_noncurrent_expiration_versions > 0))
-      {
-        return <span>{t("Expiry")}</span>;
-      }
-      if (
-      el.transition && (
-      el.transition.days > 0 || el.transition.noncurrent_transition_days))
-      {
-        return <span>{t("Transition")}</span>;
-      }
-      return <Fragment />;
-    }
-  },
-  {
-    label: t("Version"),
-    renderFullObject: true,
-    renderFunction: (el: LifeCycleItem) => {
-      if (!el) {
-        return <Fragment />;
-      }
-      if (el.expiration) {
-        if (el.expiration.days > 0) {
-          return <span>{t("Current")}</span>;
-        } else if (
-        el.expiration.noncurrent_expiration_days ||
-        el.expiration.newer_noncurrent_expiration_versions)
-        {
-          return <span>{t("Non-Current")}</span>;
+    {
+      label: t("Type"),
+      renderFullObject: true,
+      renderFunction: (el: LifeCycleItem) => {
+        if (!el) {
+          return <Fragment />;
         }
-      }
-      if (el.transition) {
-        if (el.transition.days > 0) {
-          return <span>{t("Current")}</span>;
-        } else if (el.transition.noncurrent_transition_days) {
-          return <span>{t("Non-Current")}</span>;
+        if (
+          el.expiration &&
+          (el.expiration.days > 0 ||
+            el.expiration.noncurrent_expiration_days ||
+            (el.expiration.newer_noncurrent_expiration_versions &&
+              el.expiration.newer_noncurrent_expiration_versions > 0))
+        ) {
+          return <span>{t("Expiry")}</span>;
         }
-      }
-    }
-  },
-  {
-    label: t("Expire Delete Marker"),
-    elementKey: "expire_delete_marker",
-    renderFunction: (el: LifeCycleItem) => {
-      if (!el) {
+        if (
+          el.transition &&
+          (el.transition.days > 0 || el.transition.noncurrent_transition_days)
+        ) {
+          return <span>{t("Transition")}</span>;
+        }
         return <Fragment />;
-      }
-      if (el.expiration && el.expiration.delete_marker !== undefined) {
-        return <span>{el.expiration.delete_marker ? t("true") : t("false")}</span>;
-      } else {
-        return <Fragment />;
-      }
+      },
     },
-    renderFullObject: true
-  },
-  {
-    label: t("Tier"),
-    elementKey: "storage_class",
-    renderFunction: renderStorageClass,
-    renderFullObject: true
-  },
-  {
-    label: t("Prefix"),
-    elementKey: "prefix"
-  },
-  {
-    label: t("After"),
-    renderFullObject: true,
-    renderFunction: (el: LifeCycleItem) => {
-      if (!el) {
-        return <Fragment />;
-      }
-      if (el.transition) {
-        if (el.transition.days > 0) {
-          return <span>{el.transition.days}{t("days")}</span>;
-        } else if (el.transition.noncurrent_transition_days) {
-          return <span>{el.transition.noncurrent_transition_days}{t("days")}</span>;
+    {
+      label: t("Version"),
+      renderFullObject: true,
+      renderFunction: (el: LifeCycleItem) => {
+        if (!el) {
+          return <Fragment />;
         }
-      }
-      if (el.expiration) {
-        if (el.expiration.days > 0) {
-          return <span>{el.expiration.days}{t("days")}</span>;
-        } else if (el.expiration.noncurrent_expiration_days) {
-          return <span>{el.expiration.noncurrent_expiration_days}{t("days")}</span>;
-        } else {
+        if (el.expiration) {
+          if (el.expiration.days > 0) {
+            return <span>{t("Current")}</span>;
+          } else if (
+            el.expiration.noncurrent_expiration_days ||
+            el.expiration.newer_noncurrent_expiration_versions
+          ) {
+            return <span>{t("Non-Current")}</span>;
+          }
+        }
+        if (el.transition) {
+          if (el.transition.days > 0) {
+            return <span>{t("Current")}</span>;
+          } else if (el.transition.noncurrent_transition_days) {
+            return <span>{t("Non-Current")}</span>;
+          }
+        }
+      },
+    },
+    {
+      label: t("Expire Delete Marker"),
+      elementKey: "expire_delete_marker",
+      renderFunction: (el: LifeCycleItem) => {
+        if (!el) {
+          return <Fragment />;
+        }
+        if (el.expiration && el.expiration.delete_marker !== undefined) {
           return (
-            <span>
-                {el.expiration.newer_noncurrent_expiration_versions}{t("versions")}
-            </span>);
-
+            <span>{el.expiration.delete_marker ? t("true") : t("false")}</span>
+          );
+        } else {
+          return <Fragment />;
         }
-      }
-    }
-  },
-  {
-    label: t("Status"),
-    elementKey: "status"
-  }];
-
+      },
+      renderFullObject: true,
+    },
+    {
+      label: t("Tier"),
+      elementKey: "storage_class",
+      renderFunction: renderStorageClass,
+      renderFullObject: true,
+    },
+    {
+      label: t("Prefix"),
+      elementKey: "prefix",
+    },
+    {
+      label: t("After"),
+      renderFullObject: true,
+      renderFunction: (el: LifeCycleItem) => {
+        if (!el) {
+          return <Fragment />;
+        }
+        if (el.transition) {
+          if (el.transition.days > 0) {
+            return (
+              <span>
+                {el.transition.days}
+                {t("days")}
+              </span>
+            );
+          } else if (el.transition.noncurrent_transition_days) {
+            return (
+              <span>
+                {el.transition.noncurrent_transition_days}
+                {t("days")}
+              </span>
+            );
+          }
+        }
+        if (el.expiration) {
+          if (el.expiration.days > 0) {
+            return (
+              <span>
+                {el.expiration.days}
+                {t("days")}
+              </span>
+            );
+          } else if (el.expiration.noncurrent_expiration_days) {
+            return (
+              <span>
+                {el.expiration.noncurrent_expiration_days}
+                {t("days")}
+              </span>
+            );
+          } else {
+            return (
+              <span>
+                {el.expiration.newer_noncurrent_expiration_versions}
+                {t("versions")}
+              </span>
+            );
+          }
+        }
+      },
+    },
+    {
+      label: t("Status"),
+      elementKey: "status",
+    },
+  ];
 
   const lifecycleActions = [
-  {
-    type: "view",
+    {
+      type: "view",
 
-    onClick(valueToSend: any): any {
-      setSelectedLifecycleRule(valueToSend);
-      setEditLifecycleOpen(true);
-    }
-  },
-  {
-    type: "delete",
-    onClick(valueToDelete: string): any {
-      setSelectedID(valueToDelete);
-      setDeleteLifecycleOpen(true);
+      onClick(valueToSend: any): any {
+        setSelectedLifecycleRule(valueToSend);
+        setEditLifecycleOpen(true);
+      },
     },
-    sendOnlyId: true
-  }];
-
+    {
+      type: "delete",
+      onClick(valueToDelete: string): any {
+        setSelectedID(valueToDelete);
+        setDeleteLifecycleOpen(true);
+      },
+      sendOnlyId: true,
+    },
+  ];
 
   return (
     <Fragment>
-      {editLifecycleOpen && selectedLifecycleRule &&
-      <EditLifecycleConfiguration
-      open={editLifecycleOpen}
-      closeModalAndRefresh={closeEditLCAndRefresh}
-      selectedBucket={bucketName}
-      lifecycleRule={selectedLifecycleRule} />}
+      {editLifecycleOpen && selectedLifecycleRule && (
+        <EditLifecycleConfiguration
+          open={editLifecycleOpen}
+          closeModalAndRefresh={closeEditLCAndRefresh}
+          selectedBucket={bucketName}
+          lifecycleRule={selectedLifecycleRule}
+        />
+      )}
 
-      
-      {addLifecycleOpen &&
-      <AddLifecycleModal
-      open={addLifecycleOpen}
-      bucketName={bucketName}
-      closeModalAndRefresh={closeAddLCAndRefresh} />}
+      {addLifecycleOpen && (
+        <AddLifecycleModal
+          open={addLifecycleOpen}
+          bucketName={bucketName}
+          closeModalAndRefresh={closeAddLCAndRefresh}
+        />
+      )}
 
-      
-      {deleteLifecycleOpen && selectedID &&
-      <DeleteBucketLifecycleRule
-      id={selectedID}
-      bucket={bucketName}
-      deleteOpen={deleteLifecycleOpen}
-      onCloseAndRefresh={closeDelLCRefresh} />}
+      {deleteLifecycleOpen && selectedID && (
+        <DeleteBucketLifecycleRule
+          id={selectedID}
+          bucket={bucketName}
+          deleteOpen={deleteLifecycleOpen}
+          onCloseAndRefresh={closeDelLCRefresh}
+        />
+      )}
 
-      
       <SectionTitle
-      separator
-      sx={{ marginBottom: 15 }}
-      actions={
-      <SecureComponent
-      scopes={[
-      IAM_SCOPES.S3_PUT_LIFECYCLE_CONFIGURATION,
-      IAM_SCOPES.S3_PUT_ACTIONS]}
-
-      resource={bucketName}
-      matchAll
-      errorProps={{ disabled: true }}>
-        
+        separator
+        sx={{ marginBottom: 15 }}
+        actions={
+          <SecureComponent
+            scopes={[
+              IAM_SCOPES.S3_PUT_LIFECYCLE_CONFIGURATION,
+              IAM_SCOPES.S3_PUT_ACTIONS,
+            ]}
+            resource={bucketName}
+            matchAll
+            errorProps={{ disabled: true }}
+          >
             <TooltipWrapper tooltip={t("Add Lifecycle Rule")}>
               <Button
-          id={"add-bucket-lifecycle-rule"}
-          onClick={() => {
-            setAddLifecycleOpen(true);
-          }}
-          label={t("Add Lifecycle Rule")}
-          icon={<AddIcon />}
-          variant={"callAction"} />
-          
+                id={"add-bucket-lifecycle-rule"}
+                onClick={() => {
+                  setAddLifecycleOpen(true);
+                }}
+                label={t("Add Lifecycle Rule")}
+                icon={<AddIcon />}
+                variant={"callAction"}
+              />
             </TooltipWrapper>
-          </SecureComponent>}>
-
-        
+          </SecureComponent>
+        }
+      >
         <HelpTip
-        content={
-        <Fragment>{t("MinIO derives it\u2019s behavior and syntax from")}
-          {" "}
+          content={
+            <Fragment>
+              {t("MinIO derives it\u2019s behavior and syntax from")}{" "}
               <a
-          target="blank"
-          href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html">{t("S3 lifecycle")}
-
-
-          </a>{" "}{t("for compatibility in migrating workloads and lifecycle rules from S3 to MinIO.")}
-
-
-        </Fragment>}
-
-        placement="right">{t("Lifecycle Rules")}
-
-
+                target="blank"
+                href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+              >
+                {t("S3 lifecycle")}
+              </a>{" "}
+              {t(
+                "for compatibility in migrating workloads and lifecycle rules from S3 to MinIO.",
+              )}
+            </Fragment>
+          }
+          placement="right"
+        >
+          {t("Lifecycle Rules")}
         </HelpTip>
       </SectionTitle>
       <Grid container>
         <Grid item xs={12}>
           <SecureComponent
-          scopes={[
-          IAM_SCOPES.S3_GET_LIFECYCLE_CONFIGURATION,
-          IAM_SCOPES.S3_GET_ACTIONS]}
-
-          resource={bucketName}
-          errorProps={{ disabled: true }}>
-            
+            scopes={[
+              IAM_SCOPES.S3_GET_LIFECYCLE_CONFIGURATION,
+              IAM_SCOPES.S3_GET_ACTIONS,
+            ]}
+            resource={bucketName}
+            errorProps={{ disabled: true }}
+          >
             <DataTable
-            itemActions={lifecycleActions}
-            columns={lifecycleColumns}
-            isLoading={loadingLifecycle}
-            records={lifecycleRecords}
-            entityName={t("Lifecycle")}
-            customEmptyMessage={t("There are no Lifecycle rules yet")}
-            idField="id"
-            customPaperHeight={"400px"} />
-            
+              itemActions={lifecycleActions}
+              columns={lifecycleColumns}
+              isLoading={loadingLifecycle}
+              records={lifecycleRecords}
+              entityName={t("Lifecycle")}
+              customEmptyMessage={t("There are no Lifecycle rules yet")}
+              idField="id"
+              customPaperHeight={"400px"}
+            />
           </SecureComponent>
         </Grid>
-        {!loadingLifecycle &&
-        <Grid item xs={12}>
+        {!loadingLifecycle && (
+          <Grid item xs={12}>
             <br />
             <HelpBox
-          title={t("Lifecycle Rules")}
-          iconComponent={<TiersIcon />}
-          help={
-          <Fragment>{t("MinIO Object Lifecycle Management allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.")}
-
-
-
-
-            <br />
-                  <br />{t("You can learn more at our")}
-            {" "}
+              title={t("Lifecycle Rules")}
+              iconComponent={<TiersIcon />}
+              help={
+                <Fragment>
+                  {t(
+                    "MinIO Object Lifecycle Management allows creating rules for time or date based automatic transition or expiry of objects. For object transition, MinIO automatically moves the object to a configured remote storage tier.",
+                  )}
+                  <br />
+                  {/* <br />
+                  {t("You can learn more at our")}{" "}
                   <a
-            href="https://min.io/docs/minio/linux/administration/object-management/object-lifecycle-management.html?ref=con"
-            target="_blank"
-            rel="noopener">{t("documentation")}
-
-
-            </a>
+                    href="https://min.io/docs/minio/linux/administration/object-management/object-lifecycle-management.html?ref=con"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {t("documentation")}
+                  </a> */}
                   .
-                </Fragment>} />
-
-          
-          </Grid>}
-        
+                </Fragment>
+              }
+            />
+          </Grid>
+        )}
       </Grid>
-    </Fragment>);
-
+    </Fragment>
+  );
 };
 
 export default BucketLifecyclePanel;

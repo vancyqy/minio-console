@@ -31,7 +31,7 @@ const PreviewPDF = ({
   path,
   loading,
   onLoad,
-  downloadFile
+  downloadFile,
 }: IPreviewPDFProps) => {
   const [errorState, setErrorState] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -45,99 +45,107 @@ const PreviewPDF = ({
 
   return (
     <Fragment>
-      {errorState && totalPages === 0 &&
-      <InformativeMessage
-      variant={"error"}
-      title={"Error"}
-      message={
-      <Fragment>{t("File preview couldn't be displayed, Please try Download instead.")}
+      {errorState && totalPages === 0 && (
+        <InformativeMessage
+          variant={"error"}
+          title={t("Error")}
+          message={
+            <Fragment>
+              {t(
+                "File preview couldn't be displayed, Please try Download instead.",
+              )}
 
-        <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 12
-        }}>
-          
-                <Button
-          id={"download-preview"}
-          onClick={downloadFile}
-          variant={"callAction"}>{t("Download File")}
-
-
-          </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 12,
+                }}
+              >
+                {/* <Button
+                  id={"download-preview"}
+                  onClick={downloadFile}
+                  variant={"callAction"}
+                >
+                  {t("Download File")}
+                </Button> */}
               </Box>
-            </Fragment>}
+            </Fragment>
+          }
+          sx={{ marginBottom: 10 }}
+        />
+      )}
 
-      sx={{ marginBottom: 10 }} />}
+      {!loading && !errorState && (
+        <InformativeMessage
+          variant={"warning"}
+          title={"File Preview"}
+          message={
+            <Fragment>
+              {t("This is a File Preview for the first")}
+              {arrayCreate.length}
+              {t(
+                "pages of the document, if you wish to work with the full document please download instead.",
+              )}
 
-      
-      {!loading && !errorState &&
-      <InformativeMessage
-      variant={"warning"}
-      title={"File Preview"}
-      message={
-      <Fragment>{t("This is a File Preview for the first")}
-        {arrayCreate.length}{t("pages of the document, if you wish to work with the full document please download instead.")}
-
-
-        <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 12
-        }}>
-          
-                <Button
-          id={"download-preview"}
-          onClick={downloadFile}
-          variant={"callAction"}>{t("Download File")}
-
-
-          </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 12,
+                }}
+              >
+                {/* <Button
+                  id={"download-preview"}
+                  onClick={downloadFile}
+                  variant={"callAction"}
+                >
+                  {t("Download File")}
+                </Button> */}
               </Box>
-            </Fragment>}
+            </Fragment>
+          }
+          sx={{ marginBottom: 10 }}
+        />
+      )}
 
-      sx={{ marginBottom: 10 }} />}
-
-      
-      {!errorState &&
-      <Box
-      sx={{
-        overflowY: "auto",
-        "& .react-pdf__Page__canvas": {
-          margin: "0 auto",
-          backgroundColor: "transparent"
-        }
-      }}>
-        
+      {!errorState && (
+        <Box
+          sx={{
+            overflowY: "auto",
+            "& .react-pdf__Page__canvas": {
+              margin: "0 auto",
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <Document
-        file={path}
-        onLoadSuccess={({ _pdfInfo }) => {
-          setTotalPages(_pdfInfo.numPages || 0);
-          setErrorState(false);
-          onLoad();
-        }}
-        onLoadError={(error) => {
-          setErrorState(true);
-          onLoad();
-          console.error(error);
-        }}>
-          
-            {arrayCreate.map((item) =>
-          <Page
-          pageNumber={item + 1}
-          key={`render-page-${item}`}
-          renderAnnotationLayer={false}
-          renderTextLayer={false}
-          renderForms={false} />)}
-
-          
+            file={path}
+            onLoadSuccess={({ _pdfInfo }) => {
+              setTotalPages(_pdfInfo.numPages || 0);
+              setErrorState(false);
+              onLoad();
+            }}
+            onLoadError={(error) => {
+              setErrorState(true);
+              onLoad();
+              console.error(error);
+            }}
+          >
+            {arrayCreate.map((item) => (
+              <Page
+                pageNumber={item + 1}
+                key={`render-page-${item}`}
+                renderAnnotationLayer={false}
+                renderTextLayer={false}
+                renderForms={false}
+              />
+            ))}
           </Document>
-        </Box>}
-      
-    </Fragment>);
-
+        </Box>
+      )}
+    </Fragment>
+  );
 };
 
 export default PreviewPDF;

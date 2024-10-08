@@ -63,7 +63,7 @@ const BucketNamingRules = ({ errorList }: {errorList: boolean[];}) => {
       id={"toggle-naming-rules"}
       type="button"
       open={showNamingRules}
-      label={`${showNamingRules ? t("Hide") : t("View")} Bucket Naming Rules`}
+      label={`${showNamingRules ? t("Hide") : t("View")} ${t('Bucket Naming Rules')}`}
       onClick={() => {
         toggleNamingRules();
       }} />

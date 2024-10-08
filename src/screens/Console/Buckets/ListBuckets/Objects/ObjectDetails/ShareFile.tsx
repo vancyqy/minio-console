@@ -241,7 +241,7 @@ const ShareFile = ({
               variant="regular"
               onClick={() => {
                 dispatch(
-                setModalSnackMessage("Share URL Copied to clipboard"));
+                setModalSnackMessage(t("Share URL Copied to clipboard")));
 
               }}
               disabled={shareURL === "" || isLoadingFile}

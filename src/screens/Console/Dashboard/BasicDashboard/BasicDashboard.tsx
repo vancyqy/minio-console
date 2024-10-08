@@ -16,22 +16,22 @@
 import { t } from "i18next";
 import React from "react";
 import {
-ArrowRightIcon,
-Box,
-breakPoints,
-BucketsIcon,
-Button,
-DiagnosticsMenuIcon,
-DrivesIcon,
-FormatDrivesIcon,
-HealIcon,
-HelpBox,
-PrometheusErrorIcon,
-ServersIcon,
-StorageIcon,
-TotalObjectsIcon,
-UptimeIcon } from
-"mds";
+  ArrowRightIcon,
+  Box,
+  breakPoints,
+  BucketsIcon,
+  Button,
+  DiagnosticsMenuIcon,
+  DrivesIcon,
+  FormatDrivesIcon,
+  HealIcon,
+  HelpBox,
+  PrometheusErrorIcon,
+  ServersIcon,
+  StorageIcon,
+  TotalObjectsIcon,
+  UptimeIcon,
+} from "mds";
 import { calculateBytes, representationNumber } from "../../../../common/utils";
 import StatusCountCard from "./StatusCountCard";
 import groupBy from "lodash/groupBy";
@@ -44,23 +44,23 @@ import TimeStatItem from "../TimeStatItem";
 import TooltipWrapper from "../../Common/TooltipWrapper/TooltipWrapper";
 import { AdminInfoResponse, ServerDrives } from "api/consoleApi";
 
-const BoxItem = ({ children }: {children: any;}) => {
+const BoxItem = ({ children }: { children: any }) => {
   return (
     <Box
-    withBorders
-    sx={{
-      padding: 15,
-      height: "136px",
-      maxWidth: "100%",
-      [`@media (max-width: ${breakPoints.sm}px)`]: {
-        padding: 5,
-        maxWidth: "initial"
-      }
-    }}>
-      
+      withBorders
+      sx={{
+        padding: 15,
+        height: "136px",
+        maxWidth: "100%",
+        [`@media (max-width: ${breakPoints.sm}px)`]: {
+          padding: 5,
+          maxWidth: "initial",
+        },
+      }}
+    >
       {children}
-    </Box>);
-
+    </Box>
+  );
 };
 
 interface IDashboardProps {
@@ -114,253 +114,255 @@ const BasicDashboard = ({ usage }: IDashboardProps) => {
 
   const serversGroup = groupBy(serverList, "state");
   const { offline: offlineServers = [], online: onlineServers = [] } =
-  serversGroup;
+    serversGroup;
   const drivesGroup = groupBy(allDrivesArray, "state");
   const { offline: offlineDrives = [], ok: onlineDrives = [] } = drivesGroup;
   return (
     <Box>
       <Box
-      sx={{
-        display: "grid",
-        gridTemplateRows: "1fr",
-        gridTemplateColumns: "1fr",
-        gap: 27,
-        marginBottom: 40
-      }}>
-        
-        <Box
         sx={{
           display: "grid",
+          gridTemplateRows: "1fr",
           gridTemplateColumns: "1fr",
-          gap: "40px"
-        }}>
-          
-          <Box
+          gap: 27,
+          marginBottom: 40,
+        }}
+      >
+        <Box
           sx={{
             display: "grid",
-            gridTemplateRows: "136px",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 20,
-            [`@media (max-width: ${breakPoints.sm}px)`]: {
-              gridTemplateColumns: "1fr"
-            },
-            [`@media (max-width: ${breakPoints.md}px)`]: {
-              marginBottom: 0
-            }
-          }}>
-            
+            gridTemplateColumns: "1fr",
+            gap: "40px",
+          }}
+        >
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateRows: "136px",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: 20,
+              [`@media (max-width: ${breakPoints.sm}px)`]: {
+                gridTemplateColumns: "1fr",
+              },
+              [`@media (max-width: ${breakPoints.md}px)`]: {
+                marginBottom: 0,
+              },
+            }}
+          >
             <BoxItem>
               <CounterCard
-              label={t("Buckets")}
-              icon={<BucketsIcon />}
-              counterValue={usage ? representationNumber(usage.buckets) : 0}
-              actions={
-              <Link
-              to={IAM_PAGES.BUCKETS}
-              style={{
-                zIndex: 3,
-                textDecoration: "none",
-                top: "40px",
-                position: "relative",
-                marginRight: "75px"
-              }}>
-                
+                label={t("Buckets")}
+                icon={<BucketsIcon />}
+                counterValue={usage ? representationNumber(usage.buckets) : 0}
+                actions={
+                  <Link
+                    to={IAM_PAGES.BUCKETS}
+                    style={{
+                      zIndex: 3,
+                      textDecoration: "none",
+                      top: "40px",
+                      position: "relative",
+                      marginRight: "75px",
+                    }}
+                  >
                     <TooltipWrapper tooltip={t("Browse")}>
                       <Button
-                  id={"browse-dashboard"}
-                  onClick={() => {}}
-                  label={t("Browse")}
-                  icon={<ArrowRightIcon />}
-                  variant={"regular"}
-                  style={{
-                    padding: 5,
-                    height: 30,
-                    fontSize: 14,
-                    marginTop: 20
-                  }} />
-                  
+                        id={"browse-dashboard"}
+                        onClick={() => {}}
+                        label={t("Browse")}
+                        icon={<ArrowRightIcon />}
+                        variant={"regular"}
+                        style={{
+                          padding: 5,
+                          height: 30,
+                          fontSize: 14,
+                          marginTop: 20,
+                        }}
+                      />
                     </TooltipWrapper>
-                  </Link>} />
-
-              
+                  </Link>
+                }
+              />
             </BoxItem>
             <BoxItem>
               <CounterCard
-              label={t("Objects")}
-              icon={<TotalObjectsIcon />}
-              counterValue={usage ? representationNumber(usage.objects) : 0} />
-              
+                label={t("Objects")}
+                icon={<TotalObjectsIcon />}
+                counterValue={usage ? representationNumber(usage.objects) : 0}
+              />
             </BoxItem>
 
             <BoxItem>
               <StatusCountCard
-              onlineCount={onlineServers.length}
-              offlineCount={offlineServers.length}
-              label={t("Servers")}
-              icon={<ServersIcon />} />
-              
+                onlineCount={onlineServers.length}
+                offlineCount={offlineServers.length}
+                label={t("Servers")}
+                icon={<ServersIcon />}
+              />
             </BoxItem>
             <BoxItem>
               <StatusCountCard
-              offlineCount={
-              usage?.backend?.offlineDrives || offlineDrives.length}
-
-              onlineCount={
-              usage?.backend?.onlineDrives || onlineDrives.length}
-
-              label={t("Drives")}
-              icon={<DrivesIcon />} />
-              
+                offlineCount={
+                  usage?.backend?.offlineDrives || offlineDrives.length
+                }
+                onlineCount={
+                  usage?.backend?.onlineDrives || onlineDrives.length
+                }
+                label={t("Drives")}
+                icon={<DrivesIcon />}
+              />
             </BoxItem>
 
             <Box
-            withBorders
-            sx={{
-              gridRowStart: "1",
-              gridRowEnd: "3",
-              gridColumnStart: "3",
-              padding: 15,
-              display: "grid",
-              justifyContent: "stretch"
-            }}>
-              
+              withBorders
+              sx={{
+                gridRowStart: "1",
+                gridRowEnd: "3",
+                gridColumnStart: "3",
+                padding: 15,
+                display: "grid",
+                justifyContent: "stretch",
+              }}
+            >
               <ReportedUsage
-              usageValue={usageValue}
-              total={usageToRepresent.total}
-              unit={usageToRepresent.unit} />
-              
+                usageValue={usageValue}
+                total={usageToRepresent.total}
+                unit={usageToRepresent.unit}
+              />
 
               <Box
-              sx={{
-                display: "flex",
-                flexFlow: "column",
-                gap: "14px"
-              }}>
-                
+                sx={{
+                  display: "flex",
+                  flexFlow: "column",
+                  gap: "14px",
+                }}
+              >
                 <TimeStatItem
-                icon={<HealIcon />}
-                label={
-                <Box>
+                  icon={<HealIcon />}
+                  label={
+                    <Box>
                       <Box
-                  sx={{
-                    display: "inline",
-                    [`@media (max-width: ${breakPoints.sm}px)`]: {
-                      display: "none"
-                    }
-                  }}>{t("Time since last")}
+                        sx={{
+                          display: "inline",
+                          [`@media (max-width: ${breakPoints.sm}px)`]: {
+                            display: "none",
+                          },
+                        }}
+                      >
+                        {t("Time since last")}
+                      </Box>{" "}
+                      {t("Heal Activity")}
+                    </Box>
+                  }
+                  value={lastHeal}
+                />
 
-
-                  </Box>{" "}{t("Heal Activity")}
-
-                </Box>}
-
-                value={lastHeal} />
-                
                 <TimeStatItem
-                icon={<DiagnosticsMenuIcon />}
-                label={
-                <Box>
+                  icon={<DiagnosticsMenuIcon />}
+                  label={
+                    <Box>
                       <Box
-                  sx={{
-                    display: "inline",
-                    [`@media (max-width: ${breakPoints.sm}px)`]: {
-                      display: "none"
-                    }
-                  }}>{t("Time since last")}
+                        sx={{
+                          display: "inline",
+                          [`@media (max-width: ${breakPoints.sm}px)`]: {
+                            display: "none",
+                          },
+                        }}
+                      >
+                        {t("Time since last")}
+                      </Box>{" "}
+                      {t("Scan Activity")}
+                    </Box>
+                  }
+                  value={lastScan}
+                />
 
-
-                  </Box>{" "}{t("Scan Activity")}
-
-                </Box>}
-
-                value={lastScan} />
-                
                 <TimeStatItem
-                icon={<UptimeIcon />}
-                label={t("Uptime")}
-                value={upTime} />
-                
+                  icon={<UptimeIcon />}
+                  label={t("Uptime")}
+                  value={upTime}
+                />
               </Box>
             </Box>
           </Box>
           <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: "14px",
-            [`@media (max-width: ${breakPoints.lg}px)`]: {
-              gridTemplateColumns: "1fr"
-            }
-          }}>
-            
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "14px",
+              [`@media (max-width: ${breakPoints.lg}px)`]: {
+                gridTemplateColumns: "1fr",
+              },
+            }}
+          >
             <TimeStatItem
-            icon={<StorageIcon />}
-            label={t("Backend type")}
-            value={usage?.backend?.backendType ?? "Unknown"} />
-            
+              icon={<StorageIcon />}
+              label={t("Backend type")}
+              value={usage?.backend?.backendType ?? "Unknown"}
+            />
+
             <TimeStatItem
-            icon={<FormatDrivesIcon />}
-            label={t("Standard storage class parity")}
-            value={usage?.backend?.standardSCParity?.toString() ?? "n/a"} />
-            
+              icon={<FormatDrivesIcon />}
+              label={t("Standard storage class parity")}
+              value={usage?.backend?.standardSCParity?.toString() ?? "n/a"}
+            />
+
             <TimeStatItem
-            icon={<FormatDrivesIcon />}
-            label={t("Reduced redundancy storage class parity")}
-            value={usage?.backend?.rrSCParity?.toString() ?? "n/a"} />
-            
+              icon={<FormatDrivesIcon />}
+              label={t("Reduced redundancy storage class parity")}
+              value={usage?.backend?.rrSCParity?.toString() ?? "n/a"}
+            />
           </Box>
 
           <Box
-          sx={{
-            display: "grid",
-            gridTemplateRows: "auto",
-            gridTemplateColumns: "1fr",
-            gap: "auto"
-          }}>
-            
+            sx={{
+              display: "grid",
+              gridTemplateRows: "auto",
+              gridTemplateColumns: "1fr",
+              gap: "auto",
+            }}
+          >
             <ServersList data={serverList} />
           </Box>
         </Box>
-        {usage?.advancedMetricsStatus === "not configured" &&
-        <Box>
-            <HelpBox
-          iconComponent={<PrometheusErrorIcon />}
-          title={t("We can’t retrieve advanced metrics at this time.")}
-          help={
+        {usage?.advancedMetricsStatus === "not configured" && (
           <Box>
+            <HelpBox
+              iconComponent={<PrometheusErrorIcon />}
+              title={t("We can’t retrieve advanced metrics at this time.")}
+              help={
+                <Box>
                   <Box
-            sx={{
-              fontSize: "14px"
-            }}>{t("MinIO Dashboard will display basic metrics as we couldn\u2019t connect to Prometheus successfully. Please try again in a few minutes. If the problem persists, you can review your configuration and confirm that Prometheus server is up and running.")}
-
-
-
-
-
-
-            </Box>
-                  <Box
-            sx={{
-              paddingTop: 20,
-              fontSize: 14
-            }}>
-              
-                    <a
-              href="https://min.io/docs/minio/linux/operations/monitoring/collect-minio-metrics-using-prometheus.html"
-              target="_blank"
-              rel="noopener">{t("Read more about Prometheus on our Docs site.")}
-
-
-              </a>
+                    sx={{
+                      fontSize: "14px",
+                    }}
+                  >
+                    {t(
+                      "MinIO Dashboard will display basic metrics as we couldn\u2019t connect to Prometheus successfully. Please try again in a few minutes. If the problem persists, you can review your configuration and confirm that Prometheus server is up and running.",
+                    )}
                   </Box>
-                </Box>} />
-
-          
-          </Box>}
-        
+                  <Box
+                    sx={{
+                      paddingTop: 20,
+                      fontSize: 14,
+                    }}
+                  >
+                    {/* <a
+                      href="https://min.io/docs/minio/linux/operations/monitoring/collect-minio-metrics-using-prometheus.html"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {t("Read more about Prometheus on our Docs site.")}
+                    </a> */}
+                  </Box>
+                </Box>
+              }
+            />
+          </Box>
+        )}
       </Box>
-    </Box>);
-
+    </Box>
+  );
 };
 
 export default BasicDashboard;

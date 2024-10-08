@@ -18,32 +18,32 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-AddIcon,
-Box,
-BucketsIcon,
-Button,
-Grid,
-HelpBox,
-SectionTitle,
-TrashIcon,
-HelpTip } from
-"mds";
-import {DataTable} from "mds-dist"
+  AddIcon,
+  Box,
+  BucketsIcon,
+  Button,
+  Grid,
+  HelpBox,
+  SectionTitle,
+  TrashIcon,
+  HelpTip,
+} from "mds";
+import { DataTable } from "mds-dist";
 import api from "../../../../common/api";
 import {
-BucketReplication,
-BucketReplicationDestination,
-BucketReplicationRule } from
-"../types";
+  BucketReplication,
+  BucketReplicationDestination,
+  BucketReplicationRule,
+} from "../types";
 import { ErrorResponseHandler } from "../../../../common/types";
 import {
-hasPermission,
-SecureComponent } from
-"../../../../common/SecureComponent";
+  hasPermission,
+  SecureComponent,
+} from "../../../../common/SecureComponent";
 import {
-IAM_PAGES,
-IAM_SCOPES } from
-"../../../../common/SecureComponent/permissions";
+  IAM_PAGES,
+  IAM_SCOPES,
+} from "../../../../common/SecureComponent/permissions";
 import { setErrorSnackMessage, setHelpName } from "../../../../systemSlice";
 import { selBucketDetailsLoading } from "./bucketDetailsSlice";
 import { useAppDispatch } from "../../../../store";
@@ -51,14 +51,16 @@ import TooltipWrapper from "../../Common/TooltipWrapper/TooltipWrapper";
 import withSuspense from "../../Common/Components/withSuspense";
 
 const EditReplicationModal = withSuspense(
-React.lazy(() => import("./EditReplicationModal")));
+  React.lazy(() => import("./EditReplicationModal")),
+);
 
 const AddReplicationModal = withSuspense(
-React.lazy(() => import("./AddReplicationModal")));
+  React.lazy(() => import("./AddReplicationModal")),
+);
 
 const DeleteReplicationRule = withSuspense(
-React.lazy(() => import("./DeleteReplicationRule")));
-
+  React.lazy(() => import("./DeleteReplicationRule")),
+);
 
 const BucketReplicationPanel = () => {
   const dispatch = useAppDispatch();
@@ -68,23 +70,24 @@ const BucketReplicationPanel = () => {
 
   const [loadingReplication, setLoadingReplication] = useState<boolean>(true);
   const [replicationRules, setReplicationRules] = useState<
-  BucketReplicationRule[]>(
-  []);
+    BucketReplicationRule[]
+  >([]);
   const [deleteReplicationModal, setDeleteReplicationModal] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [openSetReplication, setOpenSetReplication] = useState<boolean>(false);
   const [editReplicationModal, setEditReplicationModal] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [selectedRRule, setSelectedRRule] = useState<string>("");
   const [selectedRepRules, setSelectedRepRules] = useState<string[]>([]);
   const [deleteSelectedRules, setDeleteSelectedRules] =
-  useState<boolean>(false);
+    useState<boolean>(false);
 
   const bucketName = params.bucketName || "";
 
   const displayReplicationRules = hasPermission(bucketName, [
-  IAM_SCOPES.S3_GET_REPLICATION_CONFIGURATION,
-  IAM_SCOPES.S3_GET_ACTIONS]);
+    IAM_SCOPES.S3_GET_REPLICATION_CONFIGURATION,
+    IAM_SCOPES.S3_GET_ACTIONS,
+  ]);
 
   useEffect(() => {
     dispatch(setHelpName("bucket_detail_replication"));
@@ -100,20 +103,20 @@ const BucketReplicationPanel = () => {
   useEffect(() => {
     if (loadingReplication) {
       if (displayReplicationRules) {
-        api.
-        invoke("GET", `/api/v1/buckets/${bucketName}/replication`).
-        then((res: BucketReplication) => {
-          const r = res.rules ? res.rules : [];
+        api
+          .invoke("GET", `/api/v1/buckets/${bucketName}/replication`)
+          .then((res: BucketReplication) => {
+            const r = res.rules ? res.rules : [];
 
-          r.sort((a, b) => a.priority - b.priority);
+            r.sort((a, b) => a.priority - b.priority);
 
-          setReplicationRules(r);
-          setLoadingReplication(false);
-        }).
-        catch((err: ErrorResponseHandler) => {
-          dispatch(setErrorSnackMessage(err));
-          setLoadingReplication(false);
-        });
+            setReplicationRules(r);
+            setLoadingReplication(false);
+          })
+          .catch((err: ErrorResponseHandler) => {
+            dispatch(setErrorSnackMessage(err));
+            setLoadingReplication(false);
+          });
       } else {
         setLoadingReplication(false);
       }
@@ -160,8 +163,8 @@ const BucketReplicationPanel = () => {
   const editReplicationRule = (replication: BucketReplicationRule) => {
     setSelectedRRule(replication.id);
     navigate(
-    `/buckets/edit-replication?bucketName=${bucketName}&ruleID=${replication.id}`);
-
+      `/buckets/edit-replication?bucketName=${bucketName}&ruleID=${replication.id}`,
+    );
   };
 
   const ruleDestDisplay = (events: BucketReplicationDestination) => {
@@ -169,7 +172,9 @@ const BucketReplicationPanel = () => {
   };
 
   const tagDisplay = (events: BucketReplicationRule) => {
-    return <Fragment>{events && events.tags !== "" ? t("Yes") : t("No")}</Fragment>;
+    return (
+      <Fragment>{events && events.tags !== "" ? t("Yes") : t("No")}</Fragment>
+    );
   };
 
   const selectAllItems = () => {
@@ -198,214 +203,218 @@ const BucketReplicationPanel = () => {
   };
 
   const replicationTableActions: any = [
-  {
-    type: "delete",
-    onClick: confirmDeleteReplication
-  },
-  {
-    type: "view",
-    onClick: editReplicationRule,
-    disableButtonFunction: !hasPermission(
-    bucketName,
-    [
-    IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
-    IAM_SCOPES.S3_PUT_ACTIONS],
+    {
+      type: "delete",
+      onClick: confirmDeleteReplication,
+    },
+    {
+      type: "view",
+      onClick: editReplicationRule,
+      disableButtonFunction: !hasPermission(
+        bucketName,
+        [
+          IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
+          IAM_SCOPES.S3_PUT_ACTIONS,
+        ],
 
-    true)
-
-  }];
-
+        true,
+      ),
+    },
+  ];
 
   return (
     <Fragment>
-      {openSetReplication &&
-      <AddReplicationModal
-      closeModalAndRefresh={closeAddReplication}
-      open={openSetReplication}
-      bucketName={bucketName}
-      setReplicationRules={replicationRules} />}
+      {openSetReplication && (
+        <AddReplicationModal
+          closeModalAndRefresh={closeAddReplication}
+          open={openSetReplication}
+          bucketName={bucketName}
+          setReplicationRules={replicationRules}
+        />
+      )}
 
-      
+      {deleteReplicationModal && (
+        <DeleteReplicationRule
+          deleteOpen={deleteReplicationModal}
+          selectedBucket={bucketName}
+          closeDeleteModalAndRefresh={closeReplicationModalDelete}
+          ruleToDelete={selectedRRule}
+          rulesToDelete={selectedRepRules}
+          remainingRules={replicationRules.length}
+          allSelected={
+            replicationRules.length > 0 &&
+            selectedRepRules.length === replicationRules.length
+          }
+          deleteSelectedRules={deleteSelectedRules}
+        />
+      )}
 
-      {deleteReplicationModal &&
-      <DeleteReplicationRule
-      deleteOpen={deleteReplicationModal}
-      selectedBucket={bucketName}
-      closeDeleteModalAndRefresh={closeReplicationModalDelete}
-      ruleToDelete={selectedRRule}
-      rulesToDelete={selectedRepRules}
-      remainingRules={replicationRules.length}
-      allSelected={
-      replicationRules.length > 0 &&
-      selectedRepRules.length === replicationRules.length}
+      {editReplicationModal && (
+        <EditReplicationModal
+          closeModalAndRefresh={closeEditReplication}
+          open={editReplicationModal}
+          bucketName={bucketName}
+          ruleID={selectedRRule}
+        />
+      )}
 
-      deleteSelectedRules={deleteSelectedRules} />}
-
-      
-
-      {editReplicationModal &&
-      <EditReplicationModal
-      closeModalAndRefresh={closeEditReplication}
-      open={editReplicationModal}
-      bucketName={bucketName}
-      ruleID={selectedRRule} />}
-
-      
       <SectionTitle
-      separator
-      sx={{ marginBottom: 15 }}
-      actions={
-      <Box style={{ display: "flex", gap: 10 }}>
+        separator
+        sx={{ marginBottom: 15 }}
+        actions={
+          <Box style={{ display: "flex", gap: 10 }}>
             <SecureComponent
-        scopes={[
-        IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
-        IAM_SCOPES.S3_PUT_ACTIONS]}
-
-        resource={bucketName}
-        matchAll
-        errorProps={{ disabled: true }}>
-          
+              scopes={[
+                IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
+                IAM_SCOPES.S3_PUT_ACTIONS,
+              ]}
+              resource={bucketName}
+              matchAll
+              errorProps={{ disabled: true }}
+            >
               <TooltipWrapper tooltip={t("Remove Selected Replication Rules")}>
                 <Button
-            id={"remove-bucket-replication-rule"}
-            onClick={() => {
-              confirmDeleteSelectedReplicationRules();
-            }}
-            label={t("Remove Selected Rules")}
-            icon={<TrashIcon />}
-            color={"secondary"}
-            disabled={
-            selectedRepRules.length === 0 ||
-            replicationRules.length === 0}
-
-            variant={"secondary"} />
-            
+                  id={"remove-bucket-replication-rule"}
+                  onClick={() => {
+                    confirmDeleteSelectedReplicationRules();
+                  }}
+                  label={t("Remove Selected Rules")}
+                  icon={<TrashIcon />}
+                  color={"secondary"}
+                  disabled={
+                    selectedRepRules.length === 0 ||
+                    replicationRules.length === 0
+                  }
+                  variant={"secondary"}
+                />
               </TooltipWrapper>
             </SecureComponent>
             <SecureComponent
-        scopes={[
-        IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
-        IAM_SCOPES.S3_PUT_ACTIONS]}
-
-        resource={bucketName}
-        matchAll
-        errorProps={{ disabled: true }}>
-          
+              scopes={[
+                IAM_SCOPES.S3_PUT_REPLICATION_CONFIGURATION,
+                IAM_SCOPES.S3_PUT_ACTIONS,
+              ]}
+              resource={bucketName}
+              matchAll
+              errorProps={{ disabled: true }}
+            >
               <TooltipWrapper tooltip={t("Add Replication Rule")}>
                 <Button
-            id={"add-bucket-replication-rule"}
-            onClick={() => {
-              navigate(
-              IAM_PAGES.BUCKETS_ADD_REPLICATION +
-              `?bucketName=${bucketName}&nextPriority=${
-              replicationRules.length + 1
-              }`);
-
-            }}
-            label={t("Add Replication Rule")}
-            icon={<AddIcon />}
-            variant={"callAction"} />
-            
+                  id={"add-bucket-replication-rule"}
+                  onClick={() => {
+                    navigate(
+                      IAM_PAGES.BUCKETS_ADD_REPLICATION +
+                        `?bucketName=${bucketName}&nextPriority=${
+                          replicationRules.length + 1
+                        }`,
+                    );
+                  }}
+                  label={t("Add Replication Rule")}
+                  icon={<AddIcon />}
+                  variant={"callAction"}
+                />
               </TooltipWrapper>
             </SecureComponent>
-          </Box>}>
-
-        
+          </Box>
+        }
+      >
         <HelpTip
-        content={
-        <Fragment>{t("MinIO")}
-          {" "}
+          content={
+            <Fragment>
+              {t("MinIO")}{" "}
               <a
-          target="blank"
-          href="https://min.io/docs/minio/kubernetes/upstream/administration/bucket-replication.html">{t("server-side bucket replication")}
-
-
-          </a>{" "}{t("is an automatic bucket-level configuration that synchronizes objects between a source and destination bucket.")}
-
-
-        </Fragment>}
-
-        placement="right">{t("Replication")}
-
-
+                target="blank"
+                href="https://min.io/docs/minio/kubernetes/upstream/administration/bucket-replication.html"
+              >
+                {t("server-side bucket replication")}
+              </a>{" "}
+              {t(
+                "is an automatic bucket-level configuration that synchronizes objects between a source and destination bucket.",
+              )}
+            </Fragment>
+          }
+          placement="right"
+        >
+          {t("Replication")}
         </HelpTip>
       </SectionTitle>
       <Grid container>
         <Grid item xs={12}>
           <SecureComponent
-          scopes={[
-          IAM_SCOPES.S3_GET_REPLICATION_CONFIGURATION,
-          IAM_SCOPES.S3_GET_ACTIONS]}
-
-          resource={bucketName}
-          errorProps={{ disabled: true }}>
-            
+            scopes={[
+              IAM_SCOPES.S3_GET_REPLICATION_CONFIGURATION,
+              IAM_SCOPES.S3_GET_ACTIONS,
+            ]}
+            resource={bucketName}
+            errorProps={{ disabled: true }}
+          >
             <DataTable
-            itemActions={replicationTableActions}
-            columns={[
-            {
-              label: t("Priority"),
-              elementKey: "priority",
-              width: 55,
-              contentTextAlign: "center"
-            },
-            {
-              label: t("Destination"),
-              elementKey: "destination",
-              renderFunction: ruleDestDisplay
-            },
-            {
-              label: t("Prefix"),
-              elementKey: "prefix",
-              width: 200
-            },
-            {
-              label: t("Tags"),
-              elementKey: "tags",
-              renderFunction: tagDisplay,
-              width: 60
-            },
-            { label: "Status", elementKey: "status", width: 100 }]}
-
-            isLoading={loadingReplication}
-            records={replicationRules}
-            entityName={t("Replication Rules")}
-            idField="id"
-            customPaperHeight={"400px"}
-            textSelectable
-            selectedItems={selectedRepRules}
-            onSelect={(e) => selectRules(e)}
-            onSelectAll={selectAllItems} />
-            
+              itemActions={replicationTableActions}
+              columns={[
+                {
+                  label: t("Priority"),
+                  elementKey: "priority",
+                  width: 55,
+                  contentTextAlign: "center",
+                },
+                {
+                  label: t("Destination"),
+                  elementKey: "destination",
+                  renderFunction: ruleDestDisplay,
+                },
+                {
+                  label: t("Prefix"),
+                  elementKey: "prefix",
+                  width: 200,
+                },
+                {
+                  label: t("Tags"),
+                  elementKey: "tags",
+                  renderFunction: tagDisplay,
+                  width: 60,
+                },
+                { label: "Status", elementKey: "status", width: 100 },
+              ]}
+              isLoading={loadingReplication}
+              records={replicationRules}
+              entityName={t("Replication Rules")}
+              idField="id"
+              customPaperHeight={"400px"}
+              textSelectable
+              selectedItems={selectedRepRules}
+              onSelect={(e) => selectRules(e)}
+              onSelectAll={selectAllItems}
+            />
           </SecureComponent>
         </Grid>
         <Grid item xs={12}>
           <br />
           <HelpBox
-          title={t("Replication")}
-          iconComponent={<BucketsIcon />}
-          help={
-          <Fragment>{t("MinIO supports server-side and client-side replication of objects between source and destination buckets.")}
-
-
-            <br />
-                <br />{t("You can learn more at our")}
-            {" "}
+            title={t("Replication")}
+            iconComponent={<BucketsIcon />}
+            help={
+              <Fragment>
+                {t(
+                  "MinIO supports server-side and client-side replication of objects between source and destination buckets.",
+                )}
+                <br />
+                {/* <br />
+                {t("You can learn more at our")}{" "}
                 <a
-            href="https://min.io/docs/minio/linux/administration/bucket-replication.html?ref=con"
-            target="_blank"
-            rel="noopener">{t("documentation")}
-
-
-            </a>
+                  href="https://min.io/docs/minio/linux/administration/bucket-replication.html?ref=con"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {t("documentation")}
+                </a> */}
                 .
-              </Fragment>} />
-
-          
+              </Fragment>
+            }
+          />
         </Grid>
       </Grid>
-    </Fragment>);
-
+    </Fragment>
+  );
 };
 
 export default BucketReplicationPanel;

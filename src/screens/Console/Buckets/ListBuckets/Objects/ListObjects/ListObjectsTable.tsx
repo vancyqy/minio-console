@@ -179,10 +179,10 @@ const ListObjectsTable = () => {
     !displayListObjects && !anonymousMode
       ? permissionTooltipHelper(
           [IAM_SCOPES.S3_LIST_BUCKET, IAM_SCOPES.S3_ALL_LIST_BUCKET],
-          "view Objects in this bucket",
+          t("view Objects in this bucket"),
         )
-      : `This location is empty${
-          !rewindEnabled ? ", please try uploading a new file" : ""
+      : `${t('This location is empty')}${
+          !rewindEnabled ? t(", please try uploading a new file") : ""
         }`;
 
   if (connectionError) {

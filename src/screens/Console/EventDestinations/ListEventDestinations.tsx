@@ -16,19 +16,19 @@
 import { t } from "i18next";
 import React, { Fragment, useEffect, useState } from "react";
 import {
-ActionLink,
-AddIcon,
-Box,
-Button,
-CircleIcon,
-Grid,
-HelpBox,
-LambdaIcon,
-PageLayout,
-ProgressBar,
-RefreshIcon } from
-"mds";
-import {DataTable} from "mds-dist"
+  ActionLink,
+  AddIcon,
+  Box,
+  Button,
+  CircleIcon,
+  Grid,
+  HelpBox,
+  LambdaIcon,
+  PageLayout,
+  ProgressBar,
+  RefreshIcon,
+} from "mds";
+import { DataTable } from "mds-dist";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { api } from "api";
@@ -41,9 +41,9 @@ import { getNotificationConfigKey, notificationTransform } from "./utils";
 import { actionsTray } from "../Common/FormComponents/common/styleLibrary";
 import { IAM_PAGES } from "../../../common/SecureComponent/permissions";
 import {
-setErrorSnackMessage,
-setServerNeedsRestart } from
-"../../../systemSlice";
+  setErrorSnackMessage,
+  setServerNeedsRestart,
+} from "../../../systemSlice";
 import { AppState, useAppDispatch } from "../../../store";
 import { setDestinationLoading } from "./destinationsSlice";
 import SearchBox from "../Common/SearchBox";
@@ -56,11 +56,11 @@ const StatusDisplay = styled.div(({ theme }) => ({
   "& svg": {
     width: 16,
     marginRight: 5,
-    fill: get(theme, "signalColors.good", "#4CCB92")
+    fill: get(theme, "signalColors.good", "#4CCB92"),
   },
   "& svg.offline": {
-    fill: get(theme, "signalColors.danger", "#C51B3F")
-  }
+    fill: get(theme, "signalColors.danger", "#C51B3F"),
+  },
 }));
 
 const ListEventDestinations = () => {
@@ -75,27 +75,27 @@ const ListEventDestinations = () => {
 
   const [isDelConfirmOpen, setIsDelConfirmOpen] = useState<boolean>(false);
   const [selNotifyEndPoint, setSelNotifyEndpoint] =
-  useState<TransformedEndpointItem | null>();
+    useState<TransformedEndpointItem | null>();
 
   //Effects
   // load records on mount
   useEffect(() => {
     if (isLoading) {
       const fetchRecords = () => {
-        api.admin.
-        notificationEndpointList().
-        then((res) => {
-          let resNotEndList: NotificationEndpointItem[] = [];
-          if (res.data.notification_endpoints) {
-            resNotEndList = res.data.notification_endpoints;
-          }
-          setRecords(notificationTransform(resNotEndList));
-          dispatch(setDestinationLoading(false));
-        }).
-        catch((err) => {
-          dispatch(setErrorSnackMessage(errorToHandler(err.error)));
-          dispatch(setDestinationLoading(false));
-        });
+        api.admin
+          .notificationEndpointList()
+          .then((res) => {
+            let resNotEndList: NotificationEndpointItem[] = [];
+            if (res.data.notification_endpoints) {
+              resNotEndList = res.data.notification_endpoints;
+            }
+            setRecords(notificationTransform(resNotEndList));
+            dispatch(setDestinationLoading(false));
+          })
+          .catch((err) => {
+            dispatch(setErrorSnackMessage(errorToHandler(err.error)));
+            dispatch(setDestinationLoading(false));
+          });
       };
       fetchRecords();
     }
@@ -106,24 +106,24 @@ const ListEventDestinations = () => {
   }, [dispatch]);
 
   const resetNotificationConfig = (
-  ep: TransformedEndpointItem | undefined | null) =>
-  {
+    ep: TransformedEndpointItem | undefined | null,
+  ) => {
     if (ep?.name) {
       const configKey = getNotificationConfigKey(ep.name);
       let accountId = `:${ep.account_id}`;
       if (configKey) {
-        api.configs.
-        resetConfig(`${configKey}${accountId}`).
-        then(() => {
-          dispatch(setServerNeedsRestart(true));
-          setSelNotifyEndpoint(null);
-          setIsDelConfirmOpen(false);
-          dispatch(setDestinationLoading(true));
-        }).
-        catch((err) => {
-          setIsDelConfirmOpen(false);
-          dispatch(setErrorSnackMessage(errorToHandler(err.error)));
-        });
+        api.configs
+          .resetConfig(`${configKey}${accountId}`)
+          .then(() => {
+            dispatch(setServerNeedsRestart(true));
+            setSelNotifyEndpoint(null);
+            setIsDelConfirmOpen(false);
+            dispatch(setDestinationLoading(true));
+          })
+          .catch((err) => {
+            setIsDelConfirmOpen(false);
+            dispatch(setErrorSnackMessage(errorToHandler(err.error)));
+          });
       } else {
         setSelNotifyEndpoint(null);
         setIsDelConfirmOpen(false);
@@ -151,8 +151,8 @@ const ListEventDestinations = () => {
       <StatusDisplay>
         <CircleIcon className={status === "Offline" ? "offline" : ""} />
         {status}
-      </StatusDisplay>);
-
+      </StatusDisplay>
+    );
   };
 
   return (
@@ -160,150 +160,148 @@ const ListEventDestinations = () => {
       <PageLayout>
         <Grid item xs={12} sx={actionsTray.actionsTray}>
           <SearchBox
-          placeholder={t("Search target")}
-          onChange={setFilter}
-          value={filter}
-          sx={{ maxWidth: 380 }} />
-          
+            placeholder={t("Search target")}
+            onChange={setFilter}
+            value={filter}
+            sx={{ maxWidth: 380 }}
+          />
+
           <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            gap: 5
-          }}>
-            
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 5,
+            }}
+          >
             <TooltipWrapper tooltip={t("Refresh List")}>
               <Button
-              id={"reload-event-destinations"}
-              label={t("Refresh")}
-              variant="regular"
-              icon={<RefreshIcon />}
-              onClick={() => {
-                dispatch(setDestinationLoading(true));
-              }} />
-              
+                id={"reload-event-destinations"}
+                label={t("Refresh")}
+                variant="regular"
+                icon={<RefreshIcon />}
+                onClick={() => {
+                  dispatch(setDestinationLoading(true));
+                }}
+              />
             </TooltipWrapper>
             <TooltipWrapper tooltip={t("Add Event Destination")}>
               <Button
-              id={"add-notification-target"}
-              label={t("Add Event Destination")}
-              variant="callAction"
-              icon={<AddIcon />}
-              onClick={() => {
-                navigate(IAM_PAGES.EVENT_DESTINATIONS_ADD);
-              }} />
-              
+                id={"add-notification-target"}
+                label={t("Add Event Destination")}
+                variant="callAction"
+                icon={<AddIcon />}
+                onClick={() => {
+                  navigate(IAM_PAGES.EVENT_DESTINATIONS_ADD);
+                }}
+              />
             </TooltipWrapper>
           </Box>
         </Grid>
         {isLoading && <ProgressBar />}
-        {!isLoading &&
-        <Fragment>
-            {records.length > 0 &&
+        {!isLoading && (
           <Fragment>
+            {records.length > 0 && (
+              <Fragment>
                 <Box sx={{ width: "100%" }}>
                   <DataTable
-              itemActions={tableActions}
-              columns={[
-              {
-                label: t("Status"),
-                elementKey: "status",
-                renderFunction: statusDisplay,
-                width: 150
-              },
-              { label: t("Service"), elementKey: "service_name" }]}
-
-              isLoading={isLoading}
-              records={filteredRecords}
-              entityName={t("Event Destinations")}
-              idField="service_name"
-              customPaperHeight={"400px"} />
-              
+                    itemActions={tableActions}
+                    columns={[
+                      {
+                        label: t("Status"),
+                        elementKey: "status",
+                        renderFunction: statusDisplay,
+                        width: 150,
+                      },
+                      { label: t("Service"), elementKey: "service_name" },
+                    ]}
+                    isLoading={isLoading}
+                    records={filteredRecords}
+                    entityName={t("Event Destinations")}
+                    idField="service_name"
+                    customPaperHeight={"400px"}
+                  />
                 </Box>
                 <Grid item xs={12} sx={{ marginTop: 15 }}>
                   <HelpBox
-              title={t("Event Destinations")}
-              iconComponent={<LambdaIcon />}
-              help={
-              <Fragment>{t("MinIO bucket notifications allow administrators to send notifications to supported external services on certain object or bucket events. MinIO supports bucket and object-level S3 events similar to the Amazon S3 Event Notifications.")}
-
-
-
-
-
-                <br />
-                        <br />{t("You can learn more at our")}
-                {" "}
+                    title={t("Event Destinations")}
+                    iconComponent={<LambdaIcon />}
+                    help={
+                      <Fragment>
+                        {t(
+                          "MinIO bucket notifications allow administrators to send notifications to supported external services on certain object or bucket events. MinIO supports bucket and object-level S3 events similar to the Amazon S3 Event Notifications.",
+                        )}
+                        <br />
+                        {/* <br />
+                        {t("You can learn more at our")}{" "}
                         <a
-                href="https://min.io/docs/minio/linux/administration/monitoring/bucket-notifications.html?ref=con"
-                target="_blank"
-                rel="noopener">{t("documentation")}
-
-
-                </a>
-                        .
-                      </Fragment>} />
-
-              
+                          href="https://min.io/docs/minio/linux/administration/monitoring/bucket-notifications.html?ref=con"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {t("documentation")}
+                        </a>
+                        . */}
+                      </Fragment>
+                    }
+                  />
                 </Grid>
-              </Fragment>}
-          
-            {records.length === 0 &&
-          <Grid
-          container
-          sx={{
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center"
-          }}>
-            
+              </Fragment>
+            )}
+
+            {records.length === 0 && (
+              <Grid
+                container
+                sx={{
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Grid item xs={8}>
                   <HelpBox
-              title={t("Event Destinations")}
-              iconComponent={<LambdaIcon />}
-              help={
-              <Fragment>{t("MinIO bucket notifications allow administrators to send notifications to supported external services on certain object or bucket events. MinIO supports bucket and object-level S3 events similar to the Amazon S3 Event Notifications.")}
-
-
-
-
-
-                <br />
-                        <br />{t("To get started,")}
-                {" "}
+                    title={t("Event Destinations")}
+                    iconComponent={<LambdaIcon />}
+                    help={
+                      <Fragment>
+                        {t(
+                          "MinIO bucket notifications allow administrators to send notifications to supported external services on certain object or bucket events. MinIO supports bucket and object-level S3 events similar to the Amazon S3 Event Notifications.",
+                        )}
+                        <br />
+                        <br />
+                        {t("To get started,")}{" "}
                         <ActionLink
-                onClick={() => {
-                  navigate(IAM_PAGES.EVENT_DESTINATIONS_ADD);
-                }}>{t("Add an Event Destination")}
-
-
-                </ActionLink>
+                          onClick={() => {
+                            navigate(IAM_PAGES.EVENT_DESTINATIONS_ADD);
+                          }}
+                        >
+                          {t("Add an Event Destination")}
+                        </ActionLink>
                         .
-                      </Fragment>} />
-
-              
+                      </Fragment>
+                    }
+                  />
                 </Grid>
-              </Grid>}
-          
-          </Fragment>}
-        
+              </Grid>
+            )}
+          </Fragment>
+        )}
 
-        {isDelConfirmOpen ?
-        <ConfirmDeleteDestinationModal
-        onConfirm={() => {
-          resetNotificationConfig(selNotifyEndPoint);
-        }}
-        status={`${selNotifyEndPoint?.status}`}
-        serviceName={`${selNotifyEndPoint?.service_name}`}
-        onClose={() => {
-          setIsDelConfirmOpen(false);
-        }} /> :
-
-        null}
+        {isDelConfirmOpen ? (
+          <ConfirmDeleteDestinationModal
+            onConfirm={() => {
+              resetNotificationConfig(selNotifyEndPoint);
+            }}
+            status={`${selNotifyEndPoint?.status}`}
+            serviceName={`${selNotifyEndPoint?.service_name}`}
+            onClose={() => {
+              setIsDelConfirmOpen(false);
+            }}
+          />
+        ) : null}
       </PageLayout>
-    </Fragment>);
-
+    </Fragment>
+  );
 };
 
 export default ListEventDestinations;
