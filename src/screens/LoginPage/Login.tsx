@@ -28,6 +28,12 @@ import { getLogoApplicationVariant, getLogoVar } from "../../config";
 import { RedirectRule } from "api/consoleApi";
 import { redirectRules } from "./login.utils";
 import { setHelpName } from "../../systemSlice";
+import { doLoginAsync } from "./loginThunks";
+import {
+  setAccessKey,
+  setSecretKey} from
+  "./loginSlice";
+
 
 export const getTargetPath = () => {
   let targetPath = "/browser";
@@ -44,6 +50,10 @@ export const getTargetPath = () => {
 const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+  const accessKey = useSelector((state: AppState) => state.login.accessKey);
+  const secretKey = useSelector((state: AppState) => state.login.secretKey);
+
 
   const loginStrategy = useSelector(
   (state: AppState) => state.login.loginStrategy);
@@ -142,6 +152,13 @@ const Login = () => {
 
   useEffect(() => {
     dispatch(setHelpName("login"));
+    
+    // 自动登录
+    dispatch(setAccessKey('admin'))
+    dispatch(setSecretKey('sgepri.6186'))
+    dispatch(doLoginAsync());
+
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -65,7 +65,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://196.167.30.22:9111/",
+  "proxy": "http://196.167.30.22:19111/",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.45.2",
@@ -105,5 +105,5 @@
     "semver": "^7.5.2"
   },
   "main": "index.js",
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.4.0"
 }
